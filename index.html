@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGENCY - Digital Transformation Agency</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #0A0A0A;
+            --accent: #20C2E0;
+            --accent-2: #00D4FF;
+            --white: #E2E8F0;
+            --gray-100: #F5F5F5;
+            --gray-200: #E5E5E5;
+            --gray-800: #1A1A1A;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-hero: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 50%, #0A0A0A 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--white);
+            background: var(--primary);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        body:hover .cursor {
+            opacity: 1;
+        }
+        
+        .cursor.hovered {
+            transform: scale(1.5);
+            background-color: var(--accent-2);
+            border-color: var(--accent-2);
+        }
+
+        /* Magnetic Effect */
+        .magnetic {
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Animated Background */
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--gradient-hero);
+            z-index: -1;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(0,127,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            animation: gridMove 20s linear infinite;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(0,127,255,0.1) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Noise Texture */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.02;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.4"/></svg>');
+            animation: noise 0.2s infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); } 20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); } 40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); } 60% { transform: translate(15%, 0%); }
+            70% { transform: translate(0%, 15%); } 80% { transform: translate(-15%, 10%); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        /* General Section Styling */
+        section {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 4rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.85);
+            padding: 1rem 4rem;
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: -0.01em;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-cta:hover {
+            color: var(--primary);
+        }
+
+        .nav-cta:hover::before {
+            left: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.3s forwards;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.6s forwards;
+        }
+
+        .hero h1 .accent {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            font-weight: 400;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            opacity: 0;
+            animation: slideUp 1s ease 0.9s forwards;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            opacity: 0;
+            animation: slideUp 1s ease 1.2s forwards;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 1.2rem 3rem;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            z-index: 0;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,127,255,0.3);
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 1.2rem 3rem;
+            border: 2px solid var(--white);
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%; right: 10%; width: 100px; height: 100px;
+            background: var(--gradient-1); border-radius: 20px; animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            bottom: 20%; right: 20%; width: 60px; height: 60px;
+            background: var(--gradient-2); border-radius: 50%; animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            top: 60%; right: 5%; width: 80px; height: 80px;
+            background: var(--gradient-3); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 4rem;
+            right: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: slideUp 1s ease 1.5s forwards;
+        }
+
+        .scroll-text {
+            writing-mode: vertical-rl;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollLine 2.5s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* Section Header */
+        .section-header {
+            max-width: 1400px;
+            margin: 0 auto 6rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 10rem 4rem;
+            background: var(--primary);
+        }
+
+        .services-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.02);
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 3rem;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,127,255,0.1) 0%, transparent 50%);
+            transform: scale(0);
+            transform-origin: bottom left;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none; 
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .service-card:hover::before {
+            transform: scale(1.5);
+        }
+
+        .service-number {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .service-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .service-description {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .service-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-link:hover {
+            gap: 1rem;
+            color: var(--accent-2);
+        }
+
+        .service-details-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 1.5rem 0;
+        }
+
+        .service-details-list li {
+            padding-left: 1.5rem;
+            position: relative;
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        .service-details-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .service-highlight {
+            font-style: italic;
+            color: var(--accent-2);
+            background: rgba(0, 212, 255, 0.05);
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-left: 3px solid var(--accent-2);
+            font-size: 0.9rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* About Section */
+        .about {
+            padding: 10rem 4rem;
+            background: var(--primary);
+        }
+
+        .about-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        .about-content p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .about-visual {
+            position: relative;
+            height: 500px;
+        }
+
+        .visual-card {
+            position: absolute;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .visual-card:nth-child(1) {
+            width: 250px; height: 300px; top: 0; left: 0;
+            background: var(--gradient-1);
+        }
+        .visual-card:nth-child(2) {
+            width: 300px; height: 200px; top: 50px; right: 0;
+            background: var(--gradient-2);
+        }
+        .visual-card:nth-child(3) {
+            width: 350px; height: 250px; bottom: 0; left: 80px;
+            background: var(--gradient-3);
+        }
+
+        .about-visual:hover .visual-card:nth-child(1) { transform: translate(-20px, -20px) rotate(-5deg); }
+        .about-visual:hover .visual-card:nth-child(2) { transform: translate(20px, -10px) rotate(5deg); }
+        .about-visual:hover .visual-card:nth-child(3) { transform: translate(-10px, 20px) rotate(3deg); }
+
+        /* Work Section */
+        .work {
+            padding: 10rem 4rem;
+            background: var(--primary);
+        }
+        .work-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+        .work-item {
+            position: relative;
+            overflow: hidden;
+            background: var(--gray-800);
+        }
+        .work-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .work-item:hover img {
+            transform: scale(1.1);
+        }
+        .work-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(10,10,10,0.9), transparent);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        .work-item:hover .work-overlay {
+            transform: translateY(0);
+        }
+        .work-category {
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .work-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        .work-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(32, 194, 224, 0.1) 0%, transparent 50%);
+            transform: scale(0);
+            transform-origin: bottom left;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        .work-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .work-card:hover::before {
+            transform: scale(1.5);
+        }
+
+        .work-card-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
+            transition: border-color 0.4s ease;
+        }
+        .work-card:hover .work-card-header {
+            border-bottom-color: var(--accent);
+        }
+
+        .work-card-category {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .work-card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+        }
+
+        .work-card-social {
+            color: var(--accent-2);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .work-card-social:hover {
+            text-decoration: underline;
+            color: var(--white);
+        }
+        .work-card-social::after {
+            content: ' ↗';
+            font-size: 0.8em;
+            position: relative;
+            top: -2px;
+        }
+
+        .work-card-body p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .work-card-subtitle {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .work-card-results {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .work-card-results span {
+            background: rgba(32, 194, 224, 0.1);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .testimonial-final {
+            background: #2C2C2E;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            color: #E5E5E7;
+        }
+
+        .testimonial-final p {
+            font-style: italic;
+            margin: 0;
+        }
+
+        .testimonial-cite {
+            display: block;
+            text-align: right;
+            font-style: normal;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .testimonial-cite .author-title {
+            font-weight: 400;
+            opacity: 0.8;
+        }    
+
+        .card-divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+            transition: border-color 0.4s ease;
+        }
+        .work-card:hover .card-divider {
+            border-top-color: var(--accent);
+        }
+            
+        .card-section-title {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0 0.5rem 0;
+        }
+
+        .work-card:hover .hasil-item {
+            background: #1C1C1E; 
+            border-color: var(--accent-2);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }    
+        .logo-wall-section {
+            margin-top: 8rem;
+            text-align: center;
+            padding: 0;
+        }
+
+        .logo-scroller {
+            max-width: 1200px;
+            margin: 1rem auto;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+            mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+        }
+
+        .scroller-inner {
+            display: flex;
+            gap: 1.5rem;
+            width: max-content;
+            animation: scroll 40s linear infinite;
+        }
+
+        .logo-scroller[data-direction="right"] .scroller-inner {
+            animation-direction: reverse;
+        }
+
+        .logo-item {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 600;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .logo-item:hover {
+            background: var(--accent);
+            color: #0A0A0A;
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        @keyframes scroll {
+            to {
+                transform: translate(-50%);
+            }
+        }
+        .accordion-container {
+            max-width: 900px;
+            margin: 4rem auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .accordion-item {
+            background: #0A0A0A;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .accordion-item.active {
+            border-color: var(--accent);
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .accordion-category {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .accordion-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #E2E8F0;
+        }
+
+        .accordion-icon {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            transition: transform 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #E2E8F0;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            transition: transform 0.4s ease;
+        }
+
+        .accordion-icon::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(135deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .accordion-body {
+            padding: 0 2rem 2rem 2rem;
+            color: rgba(226, 232, 240, 0.8);
+        }
+
+        .accordion-item.active .accordion-body {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .work-card, .work-grid {
+            display: none !important;
+        }
+
+        .pricing {
+            padding: 10rem 4rem;
+            background: var(--gray-800);
+        }
+
+        .pricing-tabs {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+        .tab-link {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.7);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+        .tab-link:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--primary);
+        }
+        .tab-link.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,127,255,0.3);
+        }
+
+        .pricing-tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .pricing-tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pricing-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            align-items: stretch;
+        }
+        .ads-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(32, 194, 224, 0.1) 0%, transparent 50%);
+            transform: scale(0);
+            transform-origin: bottom left;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+        .pricing-card:hover::before {
+            transform: scale(1.5);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-2);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: -45px;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 0.5rem 4rem;
+            transform: rotate(45deg);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .package-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            text-align: center;
+        }
+        .price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            color: var(--white);
+            line-height: 1;
+            text-align: center;
+        }
+        .price .per-month {
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+        }
+        .price .price-term {
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }   
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+            flex-grow: 1;
+        }
+        .features-list li {
+            padding-left: 1.75rem;
+            position: relative;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.8);
+        }
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .pricing-card .btn-secondary,
+        .pricing-card .btn-primary {
+            width: 100%;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+        .disclaimer {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            font-style: italic;
+            margin-top: 1rem;
+            flex-grow: 1;
+        }
+        .features-list .expandable-feature {
+            padding-left: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .expandable-feature .feature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding-left: 1.75rem;
+        }
+        .expandable-feature::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .feature-icon {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+            flex-shrink: 0;
+        }
+
+        .feature-icon::before,
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--white);
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .feature-icon::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        .expandable-feature.expanded .feature-icon {
+            transform: rotate(45deg);
+        }
+
+        .sub-features-list {
+            list-style: none;
+            padding-left: 2.5rem;
+            margin-top: 0.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, margin-top 0.4s ease-out;
+        }
+
+        .expandable-feature.expanded .sub-features-list {
+            max-height: 200px;
+            margin-top: 0.75rem;
+        }
+
+        .sub-features-list li {
+            padding-left: 0;
+            position: relative;
+            margin-bottom: 0.5rem;
+            font-size: 0.9em;
+            color: rgba(226,232,240,0.7);
+        }
+
+        .sub-features-list li::before {
+            content: none;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 10rem 4rem;
+            background: var(--gray-800);
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 6rem;
+        }
+
+        .contact-form {
+            background: rgba(255,255,255,0.02);
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1.2rem;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.2);
+            color: var(--white);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .contact-info h3 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .contact-info p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .contact-item .icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .contact-item .info { flex: 1; }
+        .contact-item .label {
+            font-size: 0.9rem; font-weight: 600; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .contact-item .value { font-size: 1.1rem; color: var(--white); font-weight: 500; text-decoration: none; }
+        .contact-item .value:hover { color: var(--accent-2); }
+
+
+        /* Footer */
+        footer {
+            text-align: center;
+            background: var(--primary);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 6rem 4rem 2rem;
+        }
+
+        .footer-container { max-width: 1400px; margin: 0 auto; }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        .footer-brand h3 { font-size: 2rem; font-weight: 900; margin-bottom: 1rem; }
+        .footer-brand p { color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 2rem; max-width: 350px;}
+
+        .footer-section h4 {
+            font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .footer-section a {
+            display: block; color: rgba(255,255,255,0.7); text-decoration: none;
+            margin-bottom: 0.8rem; transition: color 0.3s ease;
+        }
+        .footer-section a:hover { color: var(--accent); }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .social-links { display: flex; gap: 1rem; }
+
+        .social-links a {
+            width: 40px; height: 40px; background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: var(--white); transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        .social-links a:hover { background: var(--accent); color: var(--primary); transform: translateY(-3px); }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            nav { padding: 1rem 2rem; }
+            .nav-links { display: none; }
+            section { padding: 6rem 2rem !important; }
+            .about-container, .contact-container { grid-template-columns: 1fr; gap: 4rem; }
+            .about-visual { height: 400px; }
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; }
+            .work-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-cta { flex-direction: column; align-items: flex-start; }
+            .services-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .stats-container { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+            .about-container { text-align: center; }
+            .about-visual { display: none; }
+            .footer-top { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center;}
+        }
+        
+        /* === PERUBAHAN UTAMA: CSS UNTUK GSAP === */
+        /* Kita sembunyikan elemen .animate-in secara default */
+        .animate-in {
+            opacity: 0;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <div class="hero-bg"></div>
+    <div class="noise"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo magnetic">RAGENCY</a>
+            <ul class="nav-links">
+                <li><a href="#services" class="magnetic">Services</a></li>
+                <li><a href="#about" class="magnetic">About</a></li>
+                <li><a href="#work" class="magnetic">Work</a></li>
+                <li><a href="#contact" class="magnetic">Contact</a></li>
+            </ul>
+            <a href="#contact" class="nav-cta magnetic">Let's Talk</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            
+            <div class="hero-content">
+                <div class="hero-subtitle">Digital Transformation Agency</div>
+                <h1>
+                    We Create<br>
+                    <span class="accent">Digital</span><br>
+                    Experiences
+                </h1>
+                <p class="hero-description">
+                    Kami adalah creative agency yang mendorong brand Anda ke level selanjutnya melalui transformasi digital yang inovatif dan terukur.
+                </p>
+                <div class="hero-cta">
+                    <a href="#work" class="btn-primary magnetic"><span>Our Work</span></a>
+                    <a href="#services" class="btn-secondary magnetic"><span>Services</span></a>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">
+                <span class="scroll-text">Scroll Down</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="about-container">
+                <div class="about-content animate-in">
+                    <div class="section-subtitle">About Ragency</div>
+                    <h2>Solusi Digital Nyata untuk Pertumbuhan Bisnis Anda</h2>
+                    <p>
+                        Ragency adalah agensi kreatif digital sejak 2023 yang fokus pada manajemen media sosial untuk meningkatkan branding, engagement, dan penjualan. Kami percaya kolaborasi adalah kunci. Bekerja bersama Anda untuk memahami visi secara mendalam, mengubah tantangan jadi peluang, dan menciptakan solusi digital yang relevan, efektif, dan kompetitif di era digital.
+                    </p>
+                    <a href="#contact" class="btn-primary magnetic"><span>Get In Touch</span></a>
+                </div>
+                <div class="about-visual animate-in" data-stagger="0.2">
+                    <div class="visual-card">💡</div>
+                    <div class="visual-card">🚀</div>
+                    <div class="visual-card">🎯</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="services" class="services">
+            <div class="section-header animate-in">
+                <div class="section-subtitle">Our Services</div>
+                <h2 class="section-title">Layanan Strategis<br>untuk Melejitkan Brand Anda</h2>
+                <p class="section-description">
+                    Dari strategi awal hingga eksekusi akhir, Ragency menyediakan layanan lengkap untuk memastikan kehadiran digital Anda tidak hanya terlihat, tapi juga memberikan hasil nyata.
+                </p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card animate-in" data-stagger="0.1">
+                    <div class="service-number">01</div>
+                    <h3 class="service-title">Social Media Management</h3>
+                    <p class="service-description">Kelola Instagram dan TikTok brand Anda dengan strategi yang terbukti berhasil. Kami membangun persona digital yang autentik dan menjual.</p>
+                    <ul class="service-details-list">
+                        <li>Strategi Konten & Brand Blueprint</li>
+                        <li>Produksi Konten Harian (Feeds, Reels, Video TikTok)</li>
+                        <li>Penulisan Naskah & Voice Over</li>
+                        <li>Talent, MUA, dan Foto Profesional</li>
+                        <li>Admin Posting, Story, & Engagement Handling</li>
+                    </ul>
+                    <p class="service-highlight">Cocok untuk brand yang ingin membangun kehadiran digital yang konsisten dan relevan.</p>
+                </div>
+
+                <div class="service-card animate-in" data-stagger="0.2">
+                    <div class="service-number">02</div>
+                    <h3 class="service-title">Creative Content Production</h3>
+                    <p class="service-description">Ubah ide mentah menjadi konten kreatif berkelas yang mampu menggerakkan emosi dan mendorong aksi.</p>
+                    <ul class="service-details-list">
+                        <li>Foto & Video Produk Berkualitas Tinggi</li>
+                        <li>Video Sinematik dengan Cerita yang Kuat</li>
+                        <li>Desain Visual yang Konsisten & Premium</li>
+                        <li>Pilar Konten Edukasi, Inspirasi, dan Soft-Selling</li>
+                    </ul>
+                    <p class="service-highlight">Didesain untuk brand yang ingin tampil memukau dan profesional di mata publik.</p>
+                </div>
+
+                <div class="service-card animate-in" data-stagger="0.3">
+                    <div class="service-number">03</div>
+                    <h3 class="service-title">Advertising & Campaign</h3>
+                    <p class="service-description">Maksimalkan performa iklan Anda di berbagai platform dengan strategi berbasis data dan optimasi berkelanjutan.</p>
+                     <ul class="service-details-list">
+                        <li>Meta Ads (Facebook & Instagram)</li>
+                        <li>TikTok Ads & TikTok Shop Ads</li>
+                        <li>Google Ads (Search, Display, YouTube)</li>
+                        <li>Riset Target Audience & Keyword</li>
+                        <li>Monitoring & Laporan Mingguan</li>
+                    </ul>
+                    <p class="service-highlight">Ideal untuk brand yang ingin meningkatkan awareness, traffic, dan konversi secara efisien.</p>
+                </div>
+
+                <div class="service-card animate-in" data-stagger="0.4">
+                    <div class="service-number">04</div>
+                    <h3 class="service-title">Brand Strategy & Consultation</h3>
+                    <p class="service-description">Dapatkan arahan langsung dari tim strategist berpengalaman yang siap membentuk DNA brand Anda.</p>
+                    <ul class="service-details-list">
+                        <li>Konsultasi Strategi Digital</li>
+                        <li>Audit Konten & Positioning</li>
+                        <li>Penyesuaian dengan Trend & Algoritma Terkini</li>
+                        <li>Panduan Ekspansi Digital Jangka Panjang</li>
+                    </ul>
+                    <p class="service-highlight">Solusi anti trial-error untuk brand yang ingin tumbuh tanpa harus jatuh bangun sendiri.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="work" class="work">
+            <div class="section-header animate-in">
+                <div class="section-subtitle">Studi Kasus</div>
+                <h2 class="section-title">Transformasi Brand<br>Bersama Kami</h2>
+                <p class="section-description">
+                    Kami tidak hanya membuat konten, kami membangun cerita sukses. Berikut adalah bukti nyata bagaimana pendekatan kami mengubah tantangan menjadi pertumbuhan.
+                </p>
+            </div>
+
+            <div class="accordion-container">
+                <div class="accordion-item animate-in" data-stagger="0.1">
+                    <button class="accordion-header">
+                        <div class="header-content">
+                            <span class="accordion-category">Personal Branding</span>
+                            <h3 class="accordion-title">Bidanku Afita</h3>
+                            <a href="https://www.instagram.com/bidanku_afita" class="work-card-social" target="_blank" rel="noopener noreferrer">@bidanku_afita</a>
+                        </div>
+                        <div class="accordion-icon"></div>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h4 class="card-section-title">Tantangan</h4>
+                            <p>Sulit menerjemahkan keahlian menjadi DNA konten sosmed yang otentik dan viral.</p>
+                            <h4 class="card-section-title">Solusi</h4>
+                            <p>Merombak total visual, merancang 3 pilar konten (Edukasi, Inspirasi, Soft-Selling), dan produksi video konsisten.</p>
+                            <hr class="card-divider">
+                            <h4 class="work-card-subtitle">Hasil:</h4>
+                            <div class="work-card-results">
+                                <span>+10,000% Followers dalam 3 Bulan</span>
+                                <span>10M+ Views FYP dalam 1 Video</span>
+                                <span>+200% Revenue/Bulan</span>
+                            </div>
+                            <hr class="card-divider">
+                            <blockquote class="testimonial-final">
+                                <p>"Totalitas Ragency tidak kami temukan di agensi lain. Konsepnya benar-benar mengubah brand saya!"</p>
+                                <cite class="testimonial-cite">- Bidan Afita, <span class="author-title">Founder</span></cite>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item animate-in" data-stagger="0.2">
+                    <button class="accordion-header">
+                        <div class="header-content">
+                            <span class="accordion-category">Pariwisata</span>
+                            <h3 class="accordion-title">Bonpisa Malang</h3>
+                            <a href="https://www.tiktok.com/@bonpisa_malang" class="work-card-social" target="_blank" rel="noopener noreferrer">@bonpisa_malang</a>
+                        </div>
+                        <div class="accordion-icon"></div>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h4 class="card-section-title">Tantangan</h4>
+                            <p>Destinasi baru yang 'tak terlihat' di tengah pasar pariwisata Malang yang riuh.</p>
+                            <h4 class="card-section-title">Solusi</h4>
+                            <p>Riset pasar, produksi foto & video sinematik dengan storytelling kuat untuk 'memeluk' target market.</p>
+                            <hr class="card-divider">
+                            <h4 class="work-card-subtitle">Hasil:</h4>
+                            <div class="work-card-results">
+                                <span>+15,000% Followers dalam 3 Bulan</span>
+                                <span>200k+ Views FYP dalam 1 Video</span>
+                                <span>+150% Revenue/Bulan</span>
+                            </div>
+                            <hr class="card-divider">
+                            <blockquote class="testimonial-final">
+                                <p>"Kami tidak merasakan kecocokan pada agensi lain. Jika ada slot, kami pasti ingin lanjut kerjasama."</p>
+                                <cite class="testimonial-cite">- Tim Manajemen, <span class="author-title">Bonpisa Malang</span></cite>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item animate-in" data-stagger="0.3">
+                    <button class="accordion-header">
+                        <div class="header-content">
+                            <span class="accordion-category">PRODUSEN F&B</span>
+                            <h3 class="accordion-title">Mie Jago Lestari</h3>
+                            <a href="https://www.tiktok.com/@mie_jago_lestari" class="work-card-social" target="_blank" rel="noopener noreferrer">@mie_jago_lestari</a>
+                        </div>
+                        <div class="accordion-icon"></div>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <h4 class="card-section-title">Tantangan</h4>
+                            <p>Citra online belum profesional dan engagement 'mati suri', menghambat potensi pasar.</p>
+                            <h4 class="card-section-title">Solusi</h4>
+                            <p>Merombak total citra visual TikTok & Instagram dan memproduksi konten video edukasi yang inspiratif.</p>
+                            <hr class="card-divider">
+                            <h4 class="work-card-subtitle">Hasil:</h4>
+                            <div class="work-card-results">
+                                <span>+550% Followers dalam 1 Bulan</span>
+                                <span>200k+ Views FYP dalam 1 Video</span>
+                                <span>+110% Revenue/Bulan</span>
+                            </div>
+                            <hr class="card-divider">
+                            <blockquote class="testimonial-final">
+                                <p>"Dampak ke penjualan offline dan online kami sangat terasa setelah di-handle Ragency. Luar biasa!"</p>
+                                <cite class="testimonial-cite">- Owner, <span class="author-title">Mie Jago Lestari</span></cite>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="logo-wall-section animate-in">
+                <h3 class="client-list-title">Daftar Brand Hebat yang Telah Berkolaborasi</h3>
+                <div class="logo-scroller" data-direction="left" data-speed="slow">
+                    <div class="scroller-inner">
+                        <div class="logo-item">Bidanku Afita</div>
+                        <div class="logo-item">Bonpisa Malang</div>
+                        <div class="logo-item">Mie Jago Lestari</div>
+                        <div class="logo-item">King Laundry</div>
+                        <div class="logo-item">Klinik Sarangan Medicare</div>
+                        <div class="logo-item">Rumah Daging Jombang</div>
+                        <div class="logo-item">Mam's Kitchen</div>
+                        <div class="logo-item">Bidanku Afita</div>
+                        <div class="logo-item">Bonpisa Malang</div>
+                        <div class="logo-item">Mie Jago Lestari</div>
+                        <div class="logo-item">King Laundry</div>
+                        <div class="logo-item">Klinik Sarangan Medicare</div>
+                        <div class="logo-item">Rumah Daging Jombang</div>
+                        <div class="logo-item">Mam's Kitchen</div>
+                    </div>
+                </div>
+                <div class="logo-scroller" data-direction="right" data-speed="slow">
+                    <div class="scroller-inner">
+                        <div class="logo-item">Optik Eva Jombang</div>
+                        <div class="logo-item">Warung Wong Bangi</div>
+                        <div class="logo-item">Maxrace Official</div>
+                        <div class="logo-item">PT Amal Sehat Berkah</div>
+                        <div class="logo-item">Kembang Daun Malang</div>
+                        <div class="logo-item">NN Beauty</div>
+                        <div class="logo-item">SMK Airlangga Sidoarjo</div>
+                        <div class="logo-item">Optik Eva Jombang</div>
+                        <div class="logo-item">Warung Wong Bangi</div>
+                        <div class="logo-item">Maxrace Official</div>
+                        <div class="logo-item">PT Amal Sehat Berkah</div>
+                        <div class="logo-item">Kembang Daun Malang</div>
+                        <div class="logo-item">NN Beauty</div>
+                        <div class="logo-item">SMK Airlangga Sidoarjo</div>
+                    </div>
+                </div>
+                <div class="logo-scroller" data-direction="left" data-speed="slow">
+                    <div class="scroller-inner">
+                        <div class="logo-item">FC Clothing</div>
+                        <div class="logo-item">Dimsum Lima Jaya</div>
+                        <div class="logo-item">Avitaskin Official</div>
+                        <div class="logo-item">Kedai Ailee</div>
+                        <div class="logo-item">Konten Lapar</div>
+                        <div class="logo-item">Pia Casa</div>
+                        <div class="logo-item">Coconut Reserve</div>
+                        <div class="logo-item">FC Clothing</div>
+                        <div class="logo-item">Dimsum Lima Jaya</div>
+                        <div class="logo-item">Avitaskin Official</div>
+                        <div class="logo-item">Kedai Ailee</div>
+                        <div class="logo-item">Konten Lapar</div>
+                        <div class="logo-item">Pia Casa</div>
+                        <div class="logo-item">Coconut Reserve</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="pricing">
+            <div class="section-header animate-in">
+                <div class="section-subtitle">Paket Investasi</div>
+                <h2 class="section-title">Temukan Solusi<br>yang Tepat Untukmu</h2>
+                <p class="section-description">
+                    Pilih paket yang paling sesuai dengan tujuan dan budget Anda. Semua harga transparan, tanpa biaya tersembunyi.
+                </p>
+            </div>
+
+            <div class="pricing-tabs animate-in">
+                <button class="tab-link active" data-tab="instagram">Manajemen Instagram</button>
+                <button class="tab-link" data-tab="tiktok">Manajemen TikTok</button>
+                <button class="tab-link" data-tab="ads">Manajemen Iklan (Ads)</button>
+                <button class="tab-link" data-tab="konsultasi">Layanan Strategis</button>
+            </div>
+
+            <div class="pricing-content-container">
+                <div id="instagram" class="pricing-tab-content active">
+                    <div class="pricing-grid">
+                        <div class="pricing-card animate-in" data-stagger="0.1">
+                            <h3 class="package-name">BASIC</h3>
+                            <div class="price">2.5jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li>Brand Blueprint & Content Pillar</li>
+                                <li>10 Feeds & 4 Reels per bulan</li>
+                                <li>48 IG Stories (2/hari)</li>
+                                <li>Script Writing & Voice Over</li>
+                                <li>10 Foto Produk & Perlengkapan</li>
+                                <li>Admin Posting & Story (24 hari)</li>
+                                <li>2x Revisi Minor</li>
+                            </ul>
+                            <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                        <div class="pricing-card featured animate-in" data-stagger="0.2">
+                            <div class="popular-badge">Best Buy</div>
+                            <h3 class="package-name">SILVER</h3>
+                            <div class="price">2.95jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li><strong>Semua di paket Basic, plus:</strong></li>
+                                <li>Konten jadi 12 Feeds & 6 Reels</li>
+                                <li>IG Stories jadi 84 Stories (3/hari)</li>
+                                <li>Termasuk Talent & MUA</li>
+                                <li>4 Foto Produk dengan Talent</li>
+                                <li>Admin Posting & Balas Komen (28 hari)</li>
+                                <li>Termasuk Admin TikTok</li>
+                            </ul>
+                            <a href="#contact" class="btn-primary magnetic"><span>Pilih Paket Ini</span></a>
+                        </div>
+                        <div class="pricing-card animate-in" data-stagger="0.3">
+                            <h3 class="package-name">GOLD</h3>
+                            <div class="price">3.45jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li><strong>Semua di paket Silver, plus:</strong></li>
+                                <li>Reels jadi 9 Video/bulan</li>
+                                <li>IG Stories jadi 90 Stories (3/hari)</li>
+                                <li>Foto Produk dengan Talent jadi 6 Foto</li>
+                                <li>Admin Aktif Setiap Hari (30 hari)</li>
+                            </ul>
+                            <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="tiktok" class="pricing-tab-content">
+                     <div class="pricing-grid">
+                        <div class="pricing-card">
+                            <h3 class="package-name">BASIC</h3>
+                            <div class="price">3.45jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li>Brand Blueprint & Content Pillar</li>
+                                <li>15 Video TikTok per bulan</li>
+                                <li>Script Writing & Voice Over</li>
+                                <li>Perlengkapan Shooting</li>
+                                <li>Revisi Minor & Free Transport</li>
+                            </ul>
+                             <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                        <div class="pricing-card featured">
+                            <div class="popular-badge">Best Buy</div>
+                             <h3 class="package-name">SILVER</h3>
+                            <div class="price">4.35jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li><strong>Semua di paket Basic, plus:</strong></li>
+                                <li>Produksi jadi 20 Video TikTok</li>
+                                <li>Termasuk Talent & MUA</li>
+                                <li>Admin Posting & Balas Komen</li>
+                            </ul>
+                             <a href="#contact" class="btn-primary magnetic"><span>Pilih Paket Ini</span></a>
+                        </div>
+                        <div class="pricing-card">
+                            <h3 class="package-name">GOLD</h3>
+                            <div class="price">5.45jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li><strong>Semua di paket Silver, plus:</strong></li>
+                                <li>Produksi jadi 30 Video TikTok</li>
+                                <li>Konten setiap hari!</li>
+                            </ul>
+                            <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="ads" class="pricing-tab-content">
+                    <div class="pricing-grid ads-grid">
+                         <div class="pricing-card">
+                            <h3 class="package-name">META ADS (FB/IG)</h3>
+                            <div class="price">1jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li>Setup & Optimasi Iklan</li>
+                                <li>Riset Target Audience</li>
+                                <li>1 Variasi Iklan</li>
+                                <li>1 Konten Video Iklan</li>
+                                <li>Laporan Mingguan</li>
+                            </ul>
+                            <p class="disclaimer">*Fee Jasa, belum termasuk budget iklan</p>
+                            <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                         <div class="pricing-card">
+                            <h3 class="package-name">TIKTOK ADS</h3>
+                            <div class="price">1.1jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li>Setup & Optimasi Iklan</li>
+                                <li>Riset Target Audience</li>
+                                <li>1 Variasi Iklan (Boost)</li>
+                                <li>1 Video Iklan Request</li>
+                                <li>Laporan Mingguan</li>
+                            </ul>
+                            <p class="disclaimer">*Fee Jasa, belum termasuk budget iklan</p>
+                            <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                        <div class="pricing-card">
+                            <h3 class="package-name">TIKTOK SHOP ADS</h3>
+                            <div class="price">1.1jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li>Setup & Optimasi Iklan</li>
+                                <li>Riset Produk & Kompetitor</li>
+                                <li>1 Video Iklan Request</li>
+                                <li>Laporan Mingguan</li>
+                            </ul>
+                            <p class="disclaimer">*Fee Jasa, belum termasuk budget iklan</p>
+                            <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                         <div class="pricing-card">
+                            <h3 class="package-name">GOOGLE ADS</h3>
+                            <div class="price">1.2jt<span class="per-month">/bln</span></div>
+                            <ul class="features-list">
+                                <li>Setup & Optimasi Iklan</li>
+                                <li>Riset Keyword & Audience</li>
+                                <li>1 Campaign (Search/Display/YT)</li>
+                                <li>Laporan Mingguan</li>
+                            </ul>
+                            <p class="disclaimer">*Fee Jasa, belum termasuk budget iklan</p>
+                            <a href="#contact" class="btn-secondary magnetic">Pilih Paket</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="konsultasi" class="pricing-tab-content">
+                    <div class="pricing-grid">
+                        <div class="pricing-card animate-in">
+                            <h3 class="package-name">LAYANAN KONSULTASI</h3>
+                            <div class="price">450rb<span class="price-term">/sesi</span></div>
+                            <ul class="features-list">
+                                <li>Sesi Konsultasi Intensif (60-90 Menit)</li>
+                                <li>Analisis Mendalam Kebutuhan Bisnis</li>
+                                
+                                <li class="expandable-feature">
+                                    <div class="feature-header">
+                                        <span>Penyusunan Kerangka Brand Blueprint</span>
+                                        <div class="feature-icon"></div>
+                                    </div>
+                                    <ul class="sub-features-list">
+                                        <li>- Brand Purpose & Voice</li>
+                                        <li>- Analisis Target & Kompetitor</li>
+                                        <li>- Unique Selling Proposition (USP)</li>
+                                        <li>- Pilar Konten & Arah Visual</li>
+                                    </ul>
+                                </li>
+                                <li>Rekomendasi Rencana Aksi Praktis</li>
+                                <li>Diskusi & Tanya Jawab Terbuka</li>
+                                <li>Dokumen Ringkasan Strategi (PDF)</li>
+                            </ul>
+                            <a href="#contact" class="btn-secondary magnetic">Jadwalkan Sesi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+         <section id="contact" class="contact">
+            <div class="contact-container">
+                <div class="contact-info animate-in">
+                    <h3>Punya Ide Besar? <br>Mari Bicara.</h3>
+                    <p>Kami selalu antusias untuk mendengar ide-ide baru. Isi formulirnya sekarang, atau hubungi kami melalui detail di bawah ini. Mari ciptakan sesuatu yang luar biasa bersama.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="icon">💬</div>
+                            <div class="info">
+                                <div class="label">WhatsApp Us</div>
+                                <a href="https://wa.me/6283833962540" target="_blank" rel="noopener noreferrer" class="value">+62 838-3396-2540</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="icon">✉️</div>
+                            <div class="info">
+                                <div class="label">Email Us</div>
+                                <a href="mailto:ragency010@gmail.com" class="value">ragency010@gmail.com</a>
+                            </div>
+                        </div>
+                         <div class="contact-item">
+                            <div class="icon">📸</div>
+                            <div class="info">
+                                <div class="label">Instagram</div>
+                                <a href="https://www.instagram.com/ragencymedia/" target="_blank" rel="noopener noreferrer" class="value">@ragencymedia</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form animate-in" data-stagger="0.2">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Nama lengkap Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Alamat email aktif" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Ceritakan tentang proyek Anda..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary magnetic"><span>Send Message</span></button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+    <div class="footer-container">
+        <div class="footer-top">
+            <div class="footer-brand animate-in">
+                <h3>RAGENCY</h3>
+                <p>Mendorong brand menuju masa depan digital yang lebih cerah.</p>
+            </div>
+            <div class="footer-section animate-in" data-stagger="0.1">
+                <h4>Links</h4>
+                <a href="#about" class="magnetic">About Us</a>
+                <a href="#services" class="magnetic">Services</a>
+                <a href="#work" class="magnetic">Work</a>
+                <a href="#contact" class="magnetic">Contact</a>
+            </div>
+            <div class="footer-section animate-in" data-stagger="0.2">
+                <h4>Legal</h4>
+                <a href="#" class="magnetic">Privacy Policy</a>
+                <a href="#" class="magnetic">Terms of Service</a>
+            </div>
+             <div class="footer-section animate-in" data-stagger="0.3">
+                <h4>Connect</h4>
+                <a href="https://wa.me/6283833962540" target="_blank" rel="noopener noreferrer" class="magnetic">WhatsApp</a>
+                <a href="https://www.instagram.com/ragencymedia/" target="_blank" rel="noopener noreferrer" class="magnetic">Instagram</a>
+                <a href="mailto:ragency010@gmail.com" class="magnetic">Email</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Ragency. All Rights Reserved.</p>
+            <div class="social-links">
+                <a href="https://wa.me/6283833962540" target="_blank" rel="noopener noreferrer" class="magnetic" aria-label="WhatsApp">WA</a>
+                <a href="https://www.instagram.com/ragencymedia/" target="_blank" rel="noopener noreferrer" class="magnetic" aria-label="Instagram">IG</a>
+                <a href="mailto:ragency010@gmail.com" class="magnetic" aria-label="Email">EM</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // =======================================================
+        // BAGIAN 1: KODE NON-ANIMASI (TETAP SAMA)
+        // =======================================================
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        const magneticElements = document.querySelectorAll('.magnetic');
+        const hoverableElements = document.querySelectorAll('a, button, .magnetic');
+
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+        const delay = 0.1;
+
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateFollower() {
+            followerX += (mouseX - followerX) * delay;
+            followerY += (mouseY - followerY) * delay;
+
+            if (cursor) {
+                cursor.style.transform = `translate(${mouseX - cursor.clientWidth / 2}px, ${mouseY - cursor.clientHeight / 2}px)`;
+            }
+            if (follower) {
+                follower.style.transform = `translate(${followerX - follower.clientWidth / 2}px, ${followerY - follower.clientHeight / 2}px)`;
+            }
+
+            requestAnimationFrame(animateFollower);
+        }
+        if (window.matchMedia("(min-width: 769px)").matches) {
+            animateFollower();
+        } else {
+            if(cursor) cursor.style.display = 'none';
+            if(follower) follower.style.display = 'none';
+        }
+
+
+        hoverableElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor && cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor && cursor.classList.remove('hovered'));
+        });
+
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                this.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            el.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0,0)';
+            });
+        });
+
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.pricing-tab-content');
+        if (tabLinks.length > 0 && tabContents.length > 0) {
+            tabLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    link.classList.add('active');
+                    const tabId = link.getAttribute('data-tab');
+                    const activeContent = document.getElementById(tabId);
+                    if (activeContent) {
+                        activeContent.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        if (accordionHeaders.length > 0) {
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const accordionItem = this.parentElement;
+                    const accordionContent = this.nextElementSibling;
+                    const isActive = accordionItem.classList.contains('active');
+
+                    document.querySelectorAll('.accordion-item.active').forEach(item => {
+                        if (item !== accordionItem) {
+                            item.classList.remove('active');
+                            item.querySelector('.accordion-content').style.maxHeight = null;
+                        }
+                    });
+
+                    if (isActive) {
+                        accordionItem.classList.remove('active');
+                        accordionContent.style.maxHeight = null;
+                    } else {
+                        accordionItem.classList.add('active');
+                        accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+                    }
+                });
+            });
+        }
+        
+        const expandableFeatures = document.querySelectorAll('.expandable-feature .feature-header');
+        if (expandableFeatures.length > 0) {
+            expandableFeatures.forEach(header => {
+                header.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const parentLi = this.parentElement;
+                    parentLi.classList.toggle('expanded');
+                });
+            });
+        }
+
+        // =======================================================
+        // BAGIAN 2: LOGIKA ANIMASI BARU DENGAN GSAP
+        // =======================================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Ambil semua elemen yang mau dianimasikan
+        const animatedElements = gsap.utils.toArray('.animate-in');
+
+        animatedElements.forEach(element => {
+            gsap.fromTo(element, 
+                { 
+                    autoAlpha: 0, // Sama dengan opacity: 0 dan visibility: hidden
+                    y: 50 // Mulai dari 50px di bawah posisi asli
+                }, 
+                {
+                    autoAlpha: 1, // Fade in dan jadi visible
+                    y: 0, // Kembali ke posisi asli
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: element,
+                        start: 'top 85%', // Animasi mulai saat elemen 85% dari atas viewport
+                        toggleActions: 'play none none none', // Hanya mainkan sekali saat masuk
+                    },
+                    // Mengambil delay dari atribut data-stagger jika ada
+                    delay: parseFloat(element.dataset.stagger) || 0 
+                }
+            );
+        });
+
+    });
+    </script>
+</body>
+</html>
