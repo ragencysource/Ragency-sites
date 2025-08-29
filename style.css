@@ -403,7 +403,7 @@ section {
   display: flex;
   flex-wrap: wrap;
   justify-content: center; 
-  gap: 2rem;
+  gap: 30px;
   margin-top: 50px;
 }
 .testimonial-card {
@@ -948,6 +948,7 @@ section {
   }
 
 }
+
 
 
 
