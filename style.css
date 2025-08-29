@@ -620,7 +620,7 @@ section {
 }
 .contact-info,
 .contact-form {
-  flex: 1;
+  /* flex: 1; */
   min-width: 300px;
 }
 .contact-info {
@@ -948,6 +948,7 @@ section {
   }
 
 }
+
 
 
 
