@@ -927,4 +927,8 @@ section {
   .modal-title {
     font-size: 1.5rem;
   }
+  .modal-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
 }
