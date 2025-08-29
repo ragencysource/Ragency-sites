@@ -213,7 +213,7 @@ section {
   padding-right: 1rem;
 }
 .section-title {
-  font-size: 3.2rem;
+  font-size: 3.1rem;
   font-weight: 700;
   max-width: 800px;
   margin-left: auto;
@@ -223,17 +223,17 @@ section {
   padding: 0;
 }
 .section-description {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--secondary-text-color);
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto 40px auto;
   line-height: 1.4;
   padding: 0;
 }
 .section-description p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--secondary-text-color);
-  max-width: 800px;
+  max-width: 600px;
   margin-bottom: 1.5rem;
   line-height: 1.4;
   padding: 0;
@@ -274,17 +274,17 @@ section {
   letter-spacing: 1px;
 }
 .hero-title {
-  font-size: 4.5rem;
+  font-size: 4rem;
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 1.5rem;
   padding: 0;
 }
 .hero-subtitle {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: var(--secondary-text-color);
   margin-bottom: 2.5rem;
-  max-width: 700px;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 1rem;
@@ -618,6 +618,16 @@ section {
 .contact-form {
   flex: 1;
   min-width: 300px;
+}
+.contact-info {
+  text-align: left;
+}
+.contact-form {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   text-align: left;
 }
 .contact-info h3 {
@@ -658,7 +668,7 @@ section {
   min-height: 150px;
 }
 .contact-form h3 {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1.5rem;
   line-height: 1.4;
   margin-bottom: 1.5rem;
@@ -836,10 +846,10 @@ section {
 }
 @media (max-width: 992px) {
   .section-title {
-    font-size: 2.6rem;
+    font-size: 2.5rem;
   }
   .hero-title {
-    font-size: 3.3rem;
+    font-size: 3.2rem;
   }
   #services .card-column {
     width: calc(50% - 20px);
@@ -905,7 +915,7 @@ section {
   }
   .section-description,
   .section-description p {
-    padding: 0 1rem;
+    padding: 0 2rem;
   }
   #services .card-column {
     width: 100%;
@@ -926,6 +936,7 @@ section {
   }
 
 }
+
 
 
 
