@@ -625,7 +625,6 @@ section {
 }
 .contact-info {
   text-align: left;
-  padding-left: 2.5rem;
 }
 .contact-form {
   background-color: var(--card-bg-color);
@@ -948,6 +947,7 @@ section {
   }
 
 }
+
 
 
 
