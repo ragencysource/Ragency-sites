@@ -103,7 +103,7 @@ html {
 }
 body {
   font-family: 'Product Sans', sans-serif;
-  background-image: linear-gradient(to right, #e6f2ff, white 20%, white 80%, #f0f8ff);
+  background-image: linear-gradient(to bottom, #e6f2ff, transparent 40%), linear-gradient(to right, #e6f2ff, white 20%, white 80%, #f0f8ff);
   background-attachment: fixed;
   color: var(--primary-text-color);
   -webkit-font-smoothing: antialiased;
@@ -926,5 +926,6 @@ section {
   }
 
 }
+
 
 
