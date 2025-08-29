@@ -834,9 +834,6 @@ section {
   max-width: 800px;
   margin: 0 auto;
 }
-.modal-pricing-grid[data-columns="4"] .pricing-card {
-  max-width: 300px;
-}
 @media (max-width: 992px) {
   .section-title {
     font-size: 2.6rem;
@@ -927,8 +924,6 @@ section {
   .modal-title {
     font-size: 1.5rem;
   }
-  .modal-pricing-grid {
-    grid-template-columns: 1fr;
-  }
 
 }
+
