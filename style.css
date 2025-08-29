@@ -223,17 +223,17 @@ section {
   padding: 0;
 }
 .section-description {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   color: var(--secondary-text-color);
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto 40px auto;
   line-height: 1.4;
   padding: 0;
 }
 .section-description p {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   color: var(--secondary-text-color);
-  max-width: 600px;
+  max-width: 650px;
   margin-bottom: 1.5rem;
   line-height: 1.4;
   padding: 0;
@@ -284,7 +284,7 @@ section {
   font-size: 1.2rem;
   color: var(--secondary-text-color);
   margin-bottom: 2.5rem;
-  max-width: 600px;
+  max-width: 650px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 1rem;
@@ -851,6 +851,12 @@ section {
   .hero-title {
     font-size: 3.2rem;
   }
+  .section-description, .section-description p {
+    font-size: 1.2rem;
+  }
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
   #services .card-column {
     width: calc(50% - 20px);
   }
@@ -915,7 +921,7 @@ section {
   }
   .section-description,
   .section-description p {
-    padding: 0 2rem;
+    padding: 0 1rem;
   }
   #services .card-column {
     width: 100%;
@@ -936,6 +942,7 @@ section {
   }
 
 }
+
 
 
 
